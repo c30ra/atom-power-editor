@@ -1,7 +1,7 @@
 {
   "name": "power-editor",
   "main": "./lib/power-editor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Some text editing tools",
   "keywords": [
     "Text",
