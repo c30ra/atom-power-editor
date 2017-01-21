@@ -1,0 +1,22 @@
+{
+  "name": "power-editor",
+  "main": "./lib/power-editor",
+  "version": "0.1.0",
+  "description": "Some text editing tools",
+  "keywords": [
+    "Text",
+    "Editor",
+    "Edit"
+  ],
+  "activationCommands": {},
+  "repository": "https://github.com/c30ra/atom-power-editor.git",
+  "license": "GPL-3.0",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^3.13.1",
+    "eslint-config-google": "^0.7.1"
+  }
+}

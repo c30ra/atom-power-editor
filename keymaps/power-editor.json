@@ -1,0 +1,6 @@
+{
+  "atom-workspace": {
+    "ctrl-alt-up": "power-editor:duplicateLineUp",
+    "ctrl-alt-down": "power-editor:duplicateLineDown"
+  }
+}

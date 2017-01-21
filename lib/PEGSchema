@@ -1,0 +1,32 @@
+start
+	=  expression
+
+expression
+	=  _ _lvalue:lvalue _ assigner _ _rvalue:rvalue _{return {lvalue:_lvalue, rvalue:_rvalue}} /
+       _ _lvalue:lvalue _{return {lvalue:_lvalue}}
+
+lvalue
+ 	= string:Literal value:Number {return {fullname:string+value, name:string, value:value}}
+
+rvalue
+	= string:Literal value:ArrayIndex {return {fullname:string+"["+value+"]", name:string, value}}/
+      value:Number {return {value:value}}
+
+assigner
+	= "="
+
+ArrayIndex
+	= "["value:Number"]" {return value}
+
+Number
+	= digit:Digit+ {return digit.join("")}
+
+Literal
+	= string:[A-Za-z_]+ {return string.join("")}
+
+Digit
+	= [0-9]
+
+_ "whitespace"
+  = [ ]* {return "$space"}
+    

@@ -1,0 +1,22 @@
+{
+  "menu": [
+    {
+      "label": "Edit",
+      "submenu": [
+        {
+          "label": "Lines",
+          "submenu": [
+            {
+              "label": "Duplicate Line Up",
+              "command": "power-editor:duplicateLineUp"
+            },
+            {
+              "label": "Duplicate Line Down",
+              "command": "power-editor:duplicateLineDown"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
