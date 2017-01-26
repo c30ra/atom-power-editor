@@ -8,65 +8,201 @@ import PowerEditor from '../lib/power-editor';
 // or `fdescribe`). Remove the `f` to unfocus the block.
 
 describe('PowerEditor', () => {
-  let workspaceElement, activationPromise;
+  let workspaceElement, activationPromise, editor;
 
   beforeEach(() => {
-    workspaceElement = atom.views.getView(atom.workspace);
+    waitsForPromise(() => {
+      return atom.workspace.open();
+    });
+
+    runs(() => {
+      editor = atom.workspace.getActiveTextEditor();
+      workspaceElement = atom.views.getView(editor);
+    });
+
     activationPromise = atom.packages.activatePackage('power-editor');
   });
 
-  describe('when the power-editor:toggle event is triggered', () => {
-    it('hides and shows the modal panel', () => {
-      // Before the activation event the view is not on the DOM, and no panel
-      // has been created
-      expect(workspaceElement.querySelector('.power-editor')).not.toExist();
-
-      // This is an activation event, triggering it will cause the package to be
-      // activated.
-      atom.commands.dispatch(workspaceElement, 'power-editor:toggle');
-
-      waitsForPromise(() => {
-        return activationPromise;
-      });
+  describe("when atom load",() => {
+    it("package is activated", () =>
+    {
+      // atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-up');
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
 
       runs(() => {
-        expect(workspaceElement.querySelector('.power-editor')).toExist();
+        expect(atom.packages.isPackageActive('power-editor')).toBe(true);
 
-        let powerEditorElement = workspaceElement.querySelector('.power-editor');
-        expect(powerEditorElement).toExist();
+      });
+    });
+  });
 
-        let powerEditorPanel = atom.workspace.panelForItem(powerEditorElement);
-        expect(powerEditorPanel.isVisible()).toBe(true);
-        atom.commands.dispatch(workspaceElement, 'power-editor:toggle');
-        expect(powerEditorPanel.isVisible()).toBe(false);
+/******************************************************************************
+* DUPLICATE LINES UP TESTS
+* ****************************************************************************/
+
+  describe('when the power-editor:duplicate-line-up event is triggered', () => {
+    it('duplicate a single line up', () => {
+      // This is an activation event, triggering it will cause the package to be
+      // activated.
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
+
+      runs(() => {
+        editor.insertText("single line of text")
+
+        atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-up');
+        editor.moveUp(1)
+        editor.moveToBeginningOfLine()
+        editor.selectToEndOfLine();
+        let txt = editor.getSelectedText()
+        expect(editor.getLineCount()).toBe(2);
+        expect(txt).toBe("single line of text");
       });
     });
 
-    it('hides and shows the view', () => {
-      // This test shows you an integration test testing at the view level.
-
-      // Attaching the workspaceElement to the DOM is required to allow the
-      // `toBeVisible()` matchers to work. Anything testing visibility or focus
-      // requires that the workspaceElement is on the DOM. Tests that attach the
-      // workspaceElement to the DOM are generally slower than those off DOM.
-      jasmine.attachToDOM(workspaceElement);
-
-      expect(workspaceElement.querySelector('.power-editor')).not.toExist();
-
-      // This is an activation event, triggering it causes the package to be
-      // activated.
-      atom.commands.dispatch(workspaceElement, 'power-editor:toggle');
-
-      waitsForPromise(() => {
-        return activationPromise;
-      });
+    it('duplicate-smart a single line up', () => {
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
 
       runs(() => {
-        // Now we can test for view visibility
-        let powerEditorElement = workspaceElement.querySelector('.power-editor');
-        expect(powerEditorElement).toBeVisible();
-        atom.commands.dispatch(workspaceElement, 'power-editor:toggle');
-        expect(powerEditorElement).not.toBeVisible();
+        editor.insertText("var10")
+
+        atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-up');
+        editor.moveUp(1)
+        editor.moveToBeginningOfLine()
+        editor.selectToEndOfLine();
+        let txt = editor.getSelectedText()
+        expect(editor.getLineCount()).toBe(2);
+        expect(txt).toBe("var9");
+      });
+    });
+
+    it("duplicate-smart a single line up, don't go below zero", () => {
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
+
+      runs(() => {
+        editor.insertText("var0")
+
+        atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-down');
+        editor.moveUp(1)
+        editor.moveToBeginningOfLine()
+        editor.selectToEndOfLine();
+        let txt = editor.getSelectedText()
+        expect(editor.getLineCount()).toBe(2);
+        expect(txt).toBe("var0");
+      });
+    });
+
+    it('duplicate-no-smart a single line up', () => {
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
+
+      runs(() => {
+        editor.insertText("var10")
+
+        atom.config.set("power-editor.useSmartDuplication", false)
+        atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-up');
+        editor.moveUp(1)
+        editor.moveToBeginningOfLine()
+        editor.selectToEndOfLine();
+        let txt = editor.getSelectedText()
+        expect(editor.getLineCount()).toBe(2);
+        expect(txt).toBe("var10");
+      });
+    });
+  });
+
+  /******************************************************************************
+  * DUPLICATE LINES DOWN TESTS
+  * ****************************************************************************/
+
+  describe('when the power-editor:duplicate-line-down event is triggered', () => {
+    it('duplicate a single line up', () => {
+      // This is an activation event, triggering it will cause the package to be
+      // activated.
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
+
+      runs(() => {
+        editor.insertText("single line of text")
+
+        atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-down');
+        editor.moveDown(1)
+        editor.moveToBeginningOfLine()
+        editor.selectToEndOfLine();
+        let txt = editor.getSelectedText()
+        expect(editor.getLineCount()).toBe(2);
+        expect(txt).toBe("single line of text");
+      });
+    });
+
+    it('duplicate-smart a single line up', () => {
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
+
+      runs(() => {
+        editor.insertText("var1")
+
+        atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-down');
+        editor.moveDown(1)
+        editor.moveToBeginningOfLine()
+        editor.selectToEndOfLine();
+        let txt = editor.getSelectedText()
+        expect(editor.getLineCount()).toBe(2);
+        expect(txt).toBe("var2");
+      });
+    });
+
+    it('duplicate-no-smart a single line down', () => {
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
+
+      runs(() => {
+        editor.insertText("var1")
+
+        atom.config.set("power-editor.useSmartDuplication", false)
+        atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-down');
+        editor.moveDown(1)
+        editor.moveToBeginningOfLine()
+        editor.selectToEndOfLine();
+        let txt = editor.getSelectedText()
+        expect(editor.getLineCount()).toBe(2);
+        expect(txt).toBe("var1");
+      });
+    });
+  });
+
+  /******************************************************************************
+  * SWITCH LIST ITEM FORWARD
+  * ****************************************************************************/
+
+  describe("when power-editor:switch-list-item-forward is triggered",() => {
+    it("switch a item in list with next item", () =>
+    {
+      // atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-up');
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
+
+      runs(() => {
+        editor.insertText("var1, var2")
+        editor.moveToBeginningOfLine()
+        atom.commands.dispatch(workspaceElement, 'power-editor:switch-list-item-forward');
+        editor.moveToBeginningOfLine()
+        editor.selectToEndOfLine();
+        let txt = editor.getSelectedText()
+        expect(txt).toBe("var2, var1");
+      });
+    });
+
+    it("switch a item in list with previous item", () =>
+    {
+      // atom.commands.dispatch(workspaceElement, 'power-editor:duplicate-line-up');
+      waitsForPromise(() => atom.packages.activatePackage('power-editor'));
+
+      runs(() => {
+        editor.insertText("var2, var1")
+        // ensure we are inside the word
+        editor.moveToEndOfLine()
+        editor.moveLeft(2);    
+        // exute the command
+        atom.commands.dispatch(workspaceElement, 'power-editor:switch-list-item-backward');
+        editor.moveToBeginningOfLine()
+        editor.selectToEndOfLine();
+        let txt = editor.getSelectedText()
+        expect(txt).toBe("var1, var2");
       });
     });
   });

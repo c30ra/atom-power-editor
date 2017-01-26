@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2017 Luca Carella
+Copyright (c) 2017 Luca Carella
 
 GNU GENERAL PUBLIC LICENSE
    Version 3, 29 June 2007
@@ -14,4 +14,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
+along with this program.  If not, see <http://www.gnu.org/licenses/>.

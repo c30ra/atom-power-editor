@@ -6,14 +6,30 @@
         {
           "label": "Lines",
           "submenu": [
+            {"type": "separator"},
             {
               "label": "Duplicate Line Up",
-              "command": "power-editor:duplicateLineUp"
+              "command": "power-editor:duplicate-line-up"
             },
             {
               "label": "Duplicate Line Down",
-              "command": "power-editor:duplicateLineDown"
-            }
+              "command": "power-editor:duplicate-line-down"
+            },
+            {"type": "separator"}
+          ],
+
+          "label": "Text",
+          "submenu": [
+            {"type": "separator"},
+            {
+              "label": "Switch With Next Word In List",
+              "command": "power-editor:switch-list-item-forward"
+            },
+            {
+              "label": "Switch With Previous Word In List",
+              "command": "power-editor:switch-list-item-backward"
+            },
+            {"type": "separator"}
           ]
         }
       ]
