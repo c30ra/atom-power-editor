@@ -1,5 +1,6 @@
 {
   "extends": "eslint-config-google",
+  "parser":"babel-eslint",
   "globals": {
     "atom": true
   },

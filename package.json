@@ -16,6 +16,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "babel-eslint": "^6.1.2",
     "eslint": "^3.13.1",
     "eslint-config-google": "^0.7.1"
   }
