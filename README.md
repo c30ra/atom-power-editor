@@ -1,6 +1,8 @@
 # power-editor package
 ![Usage](docs/usage_screenshot.gif)
 
+[![Build Status](https://travis-ci.org/c30ra/atom-power-editor.svg?branch=master)](https://travis-ci.org/c30ra/atom-power-editor)
+
 Add some text editing features to atom:
 
 - Duplicate Line Up
